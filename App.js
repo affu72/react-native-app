@@ -13,13 +13,14 @@ export default function App() {
     ]);
   }
 
-  function onPressHandler(id) {
-    setGoals((goal) => goal.id !== id);
+  function deleteHandler(id) {
+    // console.log("delete");
+    setGoals((goal) => goal.filter((goalItem) => goalItem.id !== id));
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <GoalInput addGoalHandler={addGoalHandler} onPress={onPressHandler} />
+      <GoalInput addGoalHandler={addGoalHandler} />
       <View style={styles.goalContainer}>
         {/* <ScrollView StickyHeaderComponent stickyHeaderIndices={1}>
           {goals.map((goal) => (
@@ -35,7 +36,7 @@ export default function App() {
             // itemData.index
             // itemData.separators
             // return <Text style={styles.goalItem}>{itemData.item.text}</Text>; // in their own file
-            return <GoalItem item={itemData.item.text} />;
+            return <GoalItem item={itemData.item} onPress={deleteHandler} />;
           }}
           keyExtractor={(item, index) => {
             return item.id;
