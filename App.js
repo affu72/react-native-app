@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { StyleSheet, View, SafeAreaView, FlatList } from "react-native";
+import { StyleSheet, View, SafeAreaView, FlatList, Button } from "react-native";
 import GoalItem from "./component/GoalItem";
+import { StatusBar } from "expo-status-bar";
 import GoalInput from "./component/GoalInput";
 
 export default function App() {
   const [goals, setGoals] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   function addGoalHandler(input) {
     setGoals((goal) => [
       // { text: input, key: Math.random().toString() },
@@ -18,11 +20,24 @@ export default function App() {
     setGoals((goal) => goal.filter((goalItem) => goalItem.id !== id));
   }
 
+  function handleCloseModal() {
+    setIsModalOpen(false);
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <GoalInput addGoalHandler={addGoalHandler} />
-      <View style={styles.goalContainer}>
-        {/* <ScrollView StickyHeaderComponent stickyHeaderIndices={1}>
+    <>
+      <StatusBar style="light"/>
+      <SafeAreaView style={styles.container}>
+        <Button title="Add New Goal" onPress={() => setIsModalOpen(true)} />
+        {isModalOpen && (
+          <GoalInput
+            addGoalHandler={addGoalHandler}
+            closeModal={handleCloseModal}
+            isModalOpen={isModalOpen}
+          />
+        )}
+        <View style={styles.goalContainer}>
+          {/* <ScrollView StickyHeaderComponent stickyHeaderIndices={1}>
           {goals.map((goal) => (
             <Text key={goal} style={styles.goalItem}>
               {goal}
@@ -30,30 +45,33 @@ export default function App() {
           ))}
         </ScrollView> */}
 
-        <FlatList
-          data={goals}
-          renderItem={(itemData) => {
-            // itemData.index
-            // itemData.separators
-            // return <Text style={styles.goalItem}>{itemData.item.text}</Text>; // in their own file
-            return <GoalItem item={itemData.item} onPress={deleteHandler} />;
-          }}
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
-        />
-      </View>
-    </SafeAreaView>
+          <FlatList
+            data={goals}
+            renderItem={(itemData) => {
+              // itemData.index
+              // itemData.separators
+              // return <Text style={styles.goalItem}>{itemData.item.text}</Text>; // in their own file
+              return <GoalItem item={itemData.item} onPress={deleteHandler} />;
+            }}
+            keyExtractor={(item, index) => {
+              return item.id;
+            }}
+          />
+        </View>
+      </SafeAreaView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
+    paddingVertical: 40,
     paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: "red",
     flex: 1,
+    // alignItems: "end",
+    justifyContent: "center",
   },
 
   goalContainer: {
