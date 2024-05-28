@@ -4,8 +4,10 @@
     "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "jsEngine": "jsc",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "backgroundColor":"#1e0e58",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
