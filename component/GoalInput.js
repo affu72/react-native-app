@@ -1,46 +1,80 @@
-import { View, Text, StyleSheet, Button, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  Modal,
+  Pressable,
+} from "react-native";
 import { useState } from "react";
 
-function GoalInput({ addGoalHandler }) {
+function GoalInput({ addGoalHandler, closeModal,isModalOpen }) {
   const [input, setInput] = useState("");
   function goalInputHandler(enteredText) {
     setInput(enteredText);
   }
   return (
-    <View style={styles.inputBox}>
-      <View style={styles.inputWrapper}>
-        <TextInput
-          placeholder="Type you goal here"
-          onChangeText={goalInputHandler}
-          value={input}
-        />
+    <Modal animationType="slide" visible={isModalOpen}>
+      <View style={styles.inputBox}>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={{color:"white"}}
+            placeholder="Type you goal here"
+            onChangeText={goalInputHandler}
+            value={input}
+          />
+        </View>
+        <View style={styles.buttons}>
+          <Button
+            title="Tap to add"
+            onPress={() => {
+              setInput("");
+              addGoalHandler(input);
+              closeModal();
+            }}
+          />
+          <Button title="Close" onPress={closeModal} />
+        </View>
       </View>
-      <Button
-        title="Tap to add"
-        onPress={() => {
-          setInput("");
-          return addGoalHandler(input);
-        }}
-      />
-    </View>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
   inputBox: {
-    flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "#000",
-    flex: 1,
-    marginBottom: 8,
+    justifyContent:"center",
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#000",
+    backgroundColor: '#555',
+    // height:180,
+    // marginTop: 'auto',
+    // borderWidth: 1,
+    // borderColor:'red'
+    flex:1
   },
   inputWrapper: {
-    width: "65%",
+    width: "90%",
     borderWidth: 1,
-    borderColor: "#1c1b1f",
-    padding: 4,
-    marginRight: 8,
+    borderColor: "#fff",
+    marginBottom: 16,
+    padding: 8,
+    color:'#fff',
   },
+  buttons: {
+    flexDirection: "row",
+    gap: 16,
+    justifyContent: "space-around",
+    // flexGrow: 1,
+    alignItems:"center"
+  },
+
+  modal: {
+    maxHeight: '20%',
+    zIndex:2,
+    borderWidth: 1,
+    borderColor:'red'
+  }
 });
 export default GoalInput;
